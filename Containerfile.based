@@ -1,0 +1,4 @@
+FROM ghcr.io/ublue-os/bazzite-deck:stable
+
+ADD system_files/it87 /tmp/it87
+RUN rpm-ostree install /tmp/it87/*.rpm

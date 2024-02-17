@@ -44,25 +44,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        base_image_flavor: [main, asus, framework, surface]
-        base_name: [bazzite, bazzite-deck, bazzite-nvidia]
-        base_image_name: [kinoite, silverblue]
+        base_image_flavor: [main]
+        base_name: [bazzite-deck]
+        base_image_name: [kinoite]
         major_version: [39]
         include:
           - major_version: 39
             is_latest_version: true
             is_stable_version: true
-        exclude:
-          - base_name: bazzite-deck
-            base_image_flavor: nvidia
-          - base_name: bazzite-deck
-            base_image_flavor: asus-nvidia
-          - base_name: bazzite-deck
-            base_image_flavor: surface
-          - base_name: bazzite-deck
-            base_image_flavor: surface-nvidia
-          - base_name: bazzite-nvidia
-            base_image_flavor: framework
+        exclude: []
     steps:
       - name: Verify base image
         uses: EyeCantCU/cosign-action/verify@v0.2.2
@@ -215,7 +205,7 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           containerfiles: |
-            ./Containerfile
+            ./Containerfile.based
           image: ${{ env.IMAGE_NAME }}
           tags: |
             ${{ steps.generate-tags.outputs.alias_tags }}
