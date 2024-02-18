@@ -23,3 +23,7 @@ RUN set -oeux pipefail; \
   akmods --force --kernels ${KERNEL} || true; \
   rpm-ostree install /var/cache/akmods/it87-frankcrawford/kmod-it87-frankcrawford-*.rpm; \
   unset CFLAGS
+
+RUN rm -rf /var/cache/akmods \
+  /var/tmp \
+  /tmp/*
