@@ -7,11 +7,19 @@ ARG IMAGE_BRANCH="${IMAGE_BRANCH:-main}"
 ARG BASE_IMAGE_NAME="${BASE_IMAGE_NAME:-kinoite}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-39}"
 
-ADD system_files/it87 /tmp/it87
-ADD ./build-kmod-it87.sh /tmp
-RUN if grep -qv "surface" <<< "${KERNEL_FLAVOR}"; then \
-       export KERNEL_NAME="kernel" \
-    ; else \
-       export KERNEL_NAME="kernel-surface" \
-    ; fi && \
-    bash /tmp/build-kmod-it87.sh
+RUN ln -s /usr/bin/ld.bfd /usr/bin/ld && \
+  mkdir /var/tmp && \
+  chmod 0777 {,/var}/tmp
+
+RUN wget https://copr.fedorainfracloud.org/coprs/azvaskvklenk0/it87/repo/fedora-$(rpm -E %fedora)/azvaskvklenk0-it87-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/_copr_azvaskvklenk0-it87.repo
+RUN rpm-ostree install akmod-it87-frankcrawford
+
+RUN set -oeux pipefail; \
+  KERNEL_NAME=${KERNEL_NAME:-kernel}; \
+  ARCH="$(rpm -E '%_arch')"; \ 
+  RELEASE="$(rpm -E '%fedora')"; \
+  KERNEL="$(rpm -q "${KERNEL_NAME}" --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}')"; \
+  export CFLAGS="-fno-pie -no-pie"; \
+  akmods --force --kernels ${KERNEL} || true; \
+  rpm-ostree install /var/cache/akmods/it87-frankcrawford/kmod-it87-frankcrawford-*.rpm; \
+  unset CFLAGS
