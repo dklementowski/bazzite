@@ -67,9 +67,6 @@ jobs:
       - name: Check just syntax
         uses: ublue-os/just-action@v1
 
-      - name: Maximize build space
-        uses: ublue-os/remove-unwanted-software@v6
-
       - name: Matrix Variables
         run: |
           echo "AKMODS_FLAVOR=fsync" >> $GITHUB_ENV
