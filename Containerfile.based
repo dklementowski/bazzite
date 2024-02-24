@@ -13,7 +13,6 @@ RUN ln -s /usr/bin/ld.bfd /usr/bin/ld && \
 
 RUN wget https://copr.fedorainfracloud.org/coprs/azvaskvklenk0/it87/repo/fedora-$(rpm -E %fedora)/azvaskvklenk0-it87-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/_copr_azvaskvklenk0-it87.repo
 RUN rpm-ostree install akmod-it87-frankcrawford
-
 RUN set -oeux pipefail; \
   KERNEL_NAME=${KERNEL_NAME:-kernel}; \
   ARCH="$(rpm -E '%_arch')"; \ 
@@ -27,3 +26,5 @@ RUN set -oeux pipefail; \
 RUN rm -rf /var/cache/akmods \
   /var/tmp \
   /tmp/*
+
+RUN rpm-ostree install corectrl waypipe
