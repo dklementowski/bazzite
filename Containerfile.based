@@ -7,9 +7,9 @@ ARG IMAGE_BRANCH="${IMAGE_BRANCH:-main}"
 ARG BASE_IMAGE_NAME="${BASE_IMAGE_NAME:-kinoite}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-39}"
 
-RUN ln -s /usr/bin/ld.bfd /usr/bin/ld && \
-  mkdir /var/tmp && \
-  chmod 0777 {,/var}/tmp
+RUN ln -s /usr/bin/ld.bfd /usr/bin/ld
+RUN mkdir /var/tmp
+RUN chmod 0777 {,/var}/tmp
 
 RUN wget https://copr.fedorainfracloud.org/coprs/azvaskvklenk0/it87/repo/fedora-$(rpm -E %fedora)/azvaskvklenk0-it87-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/_copr_azvaskvklenk0-it87.repo
 RUN rpm-ostree install akmod-it87-frankcrawford
