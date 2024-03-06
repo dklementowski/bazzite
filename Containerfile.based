@@ -27,4 +27,6 @@ RUN rm -rf /var/cache/akmods \
   /var/tmp \
   /tmp/*
 
-RUN rpm-ostree install corectrl waypipe
+RUN rpm-ostree install waypipe
+
+RUN rpm-ostree install https://github.com/ilya-zlobintsev/LACT/releases/download/v0.5.3/lact-0.5.3-0.x86_64.fedora-39.rpm
